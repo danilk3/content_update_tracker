@@ -25,10 +25,16 @@
         <lombok.version>1.18.26</lombok.version>
         <spring-context-indexer.version>6.0.6</spring-context-indexer.version>
         <annotations.version>23.0.1</annotations.version>
+        <openapi.version>2.0.2</openapi.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
