@@ -1,2 +1,9 @@
 app:
   test: helloFromScrapper
+  gitHubToken: <token>
+  scheduler:
+    interval: 5000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
