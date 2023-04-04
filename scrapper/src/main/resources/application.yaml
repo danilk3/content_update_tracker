@@ -1,9 +1,12 @@
 app:
   test: helloFromScrapper
-  gitHubToken: <token>
+  gitHubToken: ${TOKEN}
   scheduler:
     interval: 5000
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+server:
+  port: 8090
