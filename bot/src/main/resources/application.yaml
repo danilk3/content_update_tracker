@@ -1,6 +1,10 @@
 app:
   test: helloFromBot
+  api-key: ${TG_TOKEN}
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+scrapper:
+  base-url: http://localhost:8090

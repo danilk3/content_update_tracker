@@ -9,7 +9,6 @@ import ru.tinkoff.edu.java.bot.dto.LinkUpdate;
 
 @RestController
 public class BotController {
-
     @PostMapping("updates")
     public ResponseEntity<Void> sendUpdate(@RequestBody @Valid LinkUpdate request) {
         return ResponseEntity.ok().build();
