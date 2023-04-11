@@ -4,17 +4,19 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ForceReply;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.bot.service.models.CommandDescriptionEnum;
+import ru.tinkoff.edu.java.bot.service.models.CommandNameEnum;
 
 @Component
 public non-sealed class UntrackCommand extends Command{
     @Override
     public String command() {
-        return "/untrack";
+        return CommandNameEnum.UNTRACK.toString();
     }
 
     @Override
     public String description() {
-        return "Stop tracking the link";
+        return CommandDescriptionEnum.UNTRACK.getValue();
     }
 
     @Override

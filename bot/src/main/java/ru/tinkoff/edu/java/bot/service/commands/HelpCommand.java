@@ -4,33 +4,33 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.service.UserMessageProcessor;
+import ru.tinkoff.edu.java.bot.service.models.CommandDescriptionEnum;
+import ru.tinkoff.edu.java.bot.service.models.CommandNameEnum;
 
 @Component
 public non-sealed class HelpCommand extends Command {
 
-    private final UserMessageProcessor userMessageProcessor;
-
-    public HelpCommand(UserMessageProcessor userMessageProcessor) {
-        this.userMessageProcessor = userMessageProcessor;
-    }
-
     @Override
     public String command() {
-        return "/help";
+        return CommandNameEnum.HELP.getValue();
     }
 
     @Override
     public String description() {
-        return "Display list of commands";
+        return CommandDescriptionEnum.HELP.getValue();
     }
 
     private String getCommands() {
         StringBuilder res = new StringBuilder();
         int counter = 1;
-        for (Command command : userMessageProcessor.commands.values() ) {
-            res.append(String.format("%d) <b>%s</b> - %s\n\n", counter++, command.command(), command.description()));
+
+        CommandNameEnum[] names = CommandNameEnum.class.getEnumConstants();
+        CommandDescriptionEnum[] descriptions = CommandDescriptionEnum.class.getEnumConstants();
+
+        for (int i = 0; i < names.length; i++) {
+            res.append(String.format("%d) <b>%s</b> - %s\n\n", counter++, names[i].getValue(), descriptions[i].getValue()));
         }
+
         return res.toString();
     }
 

@@ -3,8 +3,9 @@ package ru.tinkoff.edu.java.bot.service;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.java.bot.service.commands.*;
+import ru.tinkoff.edu.java.bot.service.commands.Command;
 import ru.tinkoff.edu.java.link_parser.Parser;
 
 import java.util.Map;
@@ -14,13 +15,11 @@ import static java.util.Objects.isNull;
 @Service
 public class UserMessageProcessor {
 
-    public final Map<String, Command> commands = Map.of(
-            "/help", new HelpCommand(this),
-            "/start", new StartCommand(),
-            "/list", new ListCommand(),
-            "/track", new TrackCommand(),
-            "/untrack", new UntrackCommand()
-    );
+    public final Map<String, Command> commands;
+
+    public UserMessageProcessor(@Qualifier("commandMap") Map<String, Command> commandMap) {
+        this.commands = commandMap;
+    }
 
     private String isReply(Update update) {
         String replyMessage = null;

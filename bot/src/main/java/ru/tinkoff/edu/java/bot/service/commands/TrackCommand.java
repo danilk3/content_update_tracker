@@ -4,17 +4,19 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ForceReply;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.bot.service.models.CommandDescriptionEnum;
+import ru.tinkoff.edu.java.bot.service.models.CommandNameEnum;
 
 @Component
 public non-sealed class TrackCommand extends Command {
     @Override
     public String command() {
-        return "/track";
+        return CommandNameEnum.TRACK.getValue();
     }
 
     @Override
     public String description() {
-        return "Start tracking the link";
+        return CommandDescriptionEnum.TRACK.getValue();
     }
 
     @Override
