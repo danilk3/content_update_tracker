@@ -3,18 +3,20 @@ package ru.tinkoff.edu.java.bot.service.commands;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.bot.service.models.CommandDescriptionEnum;
+import ru.tinkoff.edu.java.bot.service.models.CommandNameEnum;
 
 @Component
 public non-sealed class ListCommand extends Command {
 
     @Override
     public String command() {
-        return "/list";
+        return CommandNameEnum.LIST.getValue();
     }
 
     @Override
     public String description() {
-        return "Show the list of tracked links";
+        return CommandDescriptionEnum.LIST.getValue();
     }
 
     @Override
