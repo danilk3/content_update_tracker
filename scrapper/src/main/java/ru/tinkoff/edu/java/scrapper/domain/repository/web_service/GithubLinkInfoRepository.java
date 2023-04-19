@@ -26,7 +26,7 @@ public class GithubLinkInfoRepository implements UpdatableRepository<GitHubRepos
     public List<GitHubRepositoryLink> findOldUpdated() {
         return jdbcTemplate.query(
                 """
-                        select g.id, l.link_id, g.name, g.owner_name, g.fork, g.forks_count, g.watchers_count, g.pushed_at, g.created_at, l.url, l.tg_chat_id
+                        select g.id, l.link_id, g.name, g.owner_name, g.fork, g.forks_count, g.watchers_count, g.pushed_at, g.created_at, g.open_issues_count, l.url, l.tg_chat_id
                         from github_link_info g 
                         join link l on l.link_id = g.link_id
                         where now() - l.updated_at >= interval '1 day'
@@ -37,8 +37,12 @@ public class GithubLinkInfoRepository implements UpdatableRepository<GitHubRepos
 
     @Override
     public GitHubRepositoryLink update(GitHubRepositoryResponse response, Long linkId) {
-        return jdbcTemplate.queryForObject("update github_link_info set name = :name, fork = :fork, forks_count = :forksCount, watchers_count = :watchersCount, pushed_at = :pushedAt where link_id = :linkId",
-                Map.of("name", response.name(), "fork", response.fork(), "forksCount", response.forksCount(), "watchersCount", response.watchersCount(), "pushedAt", response.pushedAt(), "linkId", linkId),
+        return jdbcTemplate.queryForObject(
+                "update github_link_info " +
+                        "set name = :name, fork = :fork, forks_count = :forksCount, watchers_count = :watchersCount, pushed_at = :pushedAt, open_issues_count = :openIssuesCount" +
+                        "where link_id = :linkId",
+                Map.of("name", response.name(), "fork", response.fork(), "forksCount", response.forksCount(),
+                        "watchersCount", response.watchersCount(), "pushedAt", response.pushedAt(), "openIssuesCount", response.openIssuesCount(), "linkId", linkId),
                 rowMapper);
     }
 }

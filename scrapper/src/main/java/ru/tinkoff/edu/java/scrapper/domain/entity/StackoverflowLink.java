@@ -33,12 +33,16 @@ public class StackoverflowLink {
 
     private Long tgChatId;
 
-    public boolean isEqualToStackoverflowItems(StackoverflowItems item) {
-        return item.tags().equals(tags) &&
-                item.isAnswered().equals(isAnswered) &&
-                item.viewCount().equals(viewCount) &&
-                item.answerCount().equals(answerCount) &&
-                item.score().equals(score) &&
-                item.title().equals(title);
+    public String getMessage(StackoverflowItems item) {
+        String message = "";
+
+        message += item.tags().equals(tags) ? "" : String.format("tags = %s ; ", item.tags());
+        message += item.isAnswered().equals(isAnswered) ? "" : String.format("openIssuesCount = %s ; ", item.isAnswered());
+        message += item.viewCount().equals(viewCount) ? "" : String.format("viewCount = %d ; ", item.viewCount());
+        message += item.answerCount().equals(answerCount) ? "" : String.format("answerCount = %d ; ", item.answerCount());
+        message += item.score().equals(score) ? "" : String.format("score = %d ; ", item.score());
+        message += item.title().equals(title) ? "" : String.format("score = %s ; ", item.title());
+
+        return message.isEmpty() ? null : message;
     }
 }

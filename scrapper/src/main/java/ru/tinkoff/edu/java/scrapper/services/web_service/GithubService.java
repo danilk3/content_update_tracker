@@ -9,9 +9,12 @@ import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.domain.updater.UpdatableRepository;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdate;
 import ru.tinkoff.edu.java.scrapper.dto.github.GitHubRepositoryResponse;
+import ru.tinkoff.edu.java.scrapper.models.MessageSaver;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class GithubService implements UpdatableService {
@@ -35,28 +38,31 @@ public class GithubService implements UpdatableService {
     @Override
     public void update() {
         List<GitHubRepositoryLink> oldLinks = gitHubRepository.findOldUpdated();
-        Map<String, List<GitHubRepositoryLink>> needToSendToBot = new HashMap<>();
+        Map<String, List<MessageSaver<GitHubRepositoryLink>>> needToSendToBot = new HashMap<>();
 
         for (GitHubRepositoryLink githubLink : oldLinks) {
             GitHubRepositoryResponse response = gitHubClient.getGithubRepository(githubLink.getOwnerName(), githubLink.getName());
 
-            if (!githubLink.isEqualToGitHubRepositoryResponse(response)) {
+            String message = githubLink.getMessage(response);
+
+            if (!isNull(message)) {
                 GitHubRepositoryLink savedToDbLink = gitHubRepository.update(response, githubLink.getLinkId());
                 if (needToSendToBot.containsKey(savedToDbLink.getUrl())) {
-                    needToSendToBot.get(savedToDbLink.getUrl()).add(savedToDbLink);
+                    needToSendToBot.get(savedToDbLink.getUrl()).add(new MessageSaver<>(savedToDbLink, message));
                 } else {
-                    needToSendToBot.put(savedToDbLink.getUrl(), List.of(savedToDbLink));
+                    needToSendToBot.put(savedToDbLink.getUrl(), List.of(new MessageSaver<>(savedToDbLink, message)));
                 }
             }
             linkRepository.updateUpdatedTime(githubLink.getLinkId());
         }
 
-        for (Map.Entry<String, List<GitHubRepositoryLink>> link : needToSendToBot.entrySet()) {
-            Set<Long> tgChatIds = link.getValue().stream().map(GitHubRepositoryLink::getTgChatId).collect(Collectors.toSet());
+        for (Map.Entry<String, List<MessageSaver<GitHubRepositoryLink>>> saver : needToSendToBot.entrySet()) {
+            Set<Long> tgChatIds = saver.getValue().stream().map(el -> el.getValue().getTgChatId()).collect(Collectors.toSet());
 
-            GitHubRepositoryLink updatableLink = link.getValue().get(0);
+            GitHubRepositoryLink updatableLink = saver.getValue().get(0).getValue();
+            String message = saver.getValue().get(0).getMessage();
 
-            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), "there are some updates)", tgChatIds.stream().toList()));
+            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
         }
     }
 }

@@ -4,15 +4,16 @@ alter table link
 
 create table github_link_info
 (
-    id             serial      not null,
-    link_id        bigint      not null,
-    name           text        not null,
-    owner_name     text        not null,
-    fork           boolean     not null,
-    forks_count    bigint      not null,
-    watchers_count bigint      not null,
-    pushed_at      timestamptz,
-    created_at     timestamptz not null,
+    id                serial      not null,
+    link_id           bigint      not null,
+    name              text        not null,
+    owner_name        text        not null,
+    fork              boolean     not null,
+    forks_count       bigint      not null,
+    watchers_count    bigint      not null,
+    open_issues_count bigint      not null,
+    pushed_at         timestamptz,
+    created_at        timestamptz not null,
 
     constraint github_link_info_id primary key (id),
     constraint fk_link foreign key (link_id) references link (link_id) on delete cascade on update cascade

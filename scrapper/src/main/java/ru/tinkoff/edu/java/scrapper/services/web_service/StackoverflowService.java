@@ -8,12 +8,15 @@ import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.domain.updater.UpdatableRepository;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdate;
 import ru.tinkoff.edu.java.scrapper.dto.stackoverflow.StackoverflowItems;
+import ru.tinkoff.edu.java.scrapper.models.MessageSaver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class StackoverflowService implements UpdatableService {
@@ -37,29 +40,32 @@ public class StackoverflowService implements UpdatableService {
     @Override
     public void update() {
         List<StackoverflowLink> oldLinks = stackoverflowRepository.findOldUpdated();
-        Map<String, List<StackoverflowLink>> needToSendToBot = new HashMap<>();
+        Map<String, List<MessageSaver<StackoverflowLink>>> needToSendToBot = new HashMap<>();
 
         for (StackoverflowLink stackoverflowLink : oldLinks) {
             StackoverflowItems response = stackoverflowClient.getStackoverflowQuestion(stackoverflowLink.getQuestionId()).items().get(0);
 
-            if (!stackoverflowLink.isEqualToStackoverflowItems(response)) {
+            String message = stackoverflowLink.getMessage(response);
+
+            if (!isNull(message)) {
                 StackoverflowLink savedToDbLink = stackoverflowRepository.update(response, stackoverflowLink.getLinkId());
 
                 if (needToSendToBot.containsKey(savedToDbLink.getUrl())) {
-                    needToSendToBot.get(savedToDbLink.getUrl()).add(savedToDbLink);
+                    needToSendToBot.get(savedToDbLink.getUrl()).add((new MessageSaver<>(savedToDbLink, message)));
                 } else {
-                    needToSendToBot.put(savedToDbLink.getUrl(), List.of(savedToDbLink));
+                    needToSendToBot.put(savedToDbLink.getUrl(), List.of((new MessageSaver<>(savedToDbLink, message))));
                 }
                 linkRepository.updateUpdatedTime(stackoverflowLink.getLinkId());
             }
         }
 
-        for (Map.Entry<String, List<StackoverflowLink>> link : needToSendToBot.entrySet()) {
-            Set<Long> tgChatIds = link.getValue().stream().map(StackoverflowLink::getTgChatId).collect(Collectors.toSet());
+        for (Map.Entry<String, List<MessageSaver<StackoverflowLink>>> saver : needToSendToBot.entrySet()) {
+            Set<Long> tgChatIds = saver.getValue().stream().map(el -> el.getValue().getTgChatId()).collect(Collectors.toSet());
 
-            StackoverflowLink updatableLink = link.getValue().get(0);
+            StackoverflowLink updatableLink = saver.getValue().get(0).getValue();
+            String message = saver.getValue().get(0).getMessage();
 
-            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), "there are some updates)", tgChatIds.stream().toList()));
+            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
         }
     }
 }

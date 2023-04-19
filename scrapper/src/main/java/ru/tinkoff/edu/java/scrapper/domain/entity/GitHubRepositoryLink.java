@@ -20,6 +20,8 @@ public class GitHubRepositoryLink {
 
     private Long watchersCount;
 
+    private Long openIssuesCount;
+
     private OffsetDateTime pushedAt;
 
     private OffsetDateTime createdAt;
@@ -30,13 +32,15 @@ public class GitHubRepositoryLink {
 
     private Long tgChatId;
 
-    public boolean isEqualToGitHubRepositoryResponse(GitHubRepositoryResponse response) {
-        return response.name().equals(name) &&
-                response.owner().login().equals(ownerName) &&
-                response.fork().equals(fork) &&
-                response.forksCount().equals(forksCount) &&
-                response.watchersCount().equals(watchersCount) &&
-                response.pushedAt().equals(pushedAt);
-    }
+    public String getMessage(GitHubRepositoryResponse response) {
+        String message = "";
 
+        message += response.name().equals(name) ? "" : String.format("name = %s ; ", response.name());
+        message += response.openIssuesCount().equals(openIssuesCount) ? "" : String.format("openIssuesCount = %d ; ", response.openIssuesCount());
+        message += response.fork().equals(fork) ? "" : String.format("fork = %s ; ", response.fork());
+        message += response.forksCount().equals(forksCount) ? "" : String.format("forksCount = %d ; ", response.forksCount());
+        message += response.watchersCount().equals(watchersCount) ? "" : String.format("watchersCount = %d ; ", response.watchersCount());
+
+        return message.isEmpty() ? null : message;
+    }
 }
