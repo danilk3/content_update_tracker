@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.services.jdbc;
+package ru.tinkoff.edu.java.scrapper.services.jooq;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,13 @@ import ru.tinkoff.edu.java.scrapper.services.LinkService;
 import java.util.List;
 
 @Service
-public class JdbcLinkService implements LinkService {
+public class JooqLinkService implements LinkService {
 
     private final LinkRepository linkRepository;
 
     private final LinkMapper linkMapper;
 
-    public JdbcLinkService(@Qualifier("linkRepositoryImpl") LinkRepository linkRepository, LinkMapper linkMapper) {
+    public JooqLinkService(@Qualifier("linkRepositoryJooqImpl") LinkRepository linkRepository, LinkMapper linkMapper) {
         this.linkRepository = linkRepository;
         this.linkMapper = linkMapper;
     }

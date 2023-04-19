@@ -1,10 +1,12 @@
 package ru.tinkoff.edu.java.scrapper.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
 
 @Data
+@AllArgsConstructor
 public class Link {
 
     private Long linkId;

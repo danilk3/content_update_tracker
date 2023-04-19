@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.services.web_service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.clients.StackoverflowClient;
@@ -29,7 +30,7 @@ public class StackoverflowService implements UpdatableService {
 
     private final LinkRepository linkRepository;
 
-    public StackoverflowService(UpdatableRepository<StackoverflowLink, StackoverflowItems> stackoverflowRepository, StackoverflowClient stackoverflowClient, BotClient botClient, LinkRepository linkRepository) {
+    public StackoverflowService(UpdatableRepository<StackoverflowLink, StackoverflowItems> stackoverflowRepository, StackoverflowClient stackoverflowClient, BotClient botClient, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
         this.stackoverflowRepository = stackoverflowRepository;
         this.stackoverflowClient = stackoverflowClient;
         this.botClient = botClient;

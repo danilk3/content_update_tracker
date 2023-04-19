@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.services.web_service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.clients.BotClient;
@@ -27,7 +28,7 @@ public class GithubService implements UpdatableService {
 
     private final LinkRepository linkRepository;
 
-    public GithubService(UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository, GitHubClient gitHubClient, BotClient botClient, LinkRepository linkRepository) {
+    public GithubService(UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository, GitHubClient gitHubClient, BotClient botClient, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
         this.gitHubRepository = gitHubRepository;
         this.gitHubClient = gitHubClient;
         this.botClient = botClient;
