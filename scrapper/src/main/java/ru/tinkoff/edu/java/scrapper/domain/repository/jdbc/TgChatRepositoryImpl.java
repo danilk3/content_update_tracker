@@ -1,12 +1,10 @@
-package ru.tinkoff.edu.java.scrapper.domain.repository;
+package ru.tinkoff.edu.java.scrapper.domain.repository.jdbc;
 
-import lombok.SneakyThrows;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.TgChat;
-import ru.tinkoff.edu.java.scrapper.exceptions.ChatAlreadyExistsException;
+import ru.tinkoff.edu.java.scrapper.domain.repository.TgChatRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -21,16 +19,8 @@ public class TgChatRepositoryImpl implements TgChatRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @SneakyThrows
-    @Transactional
     @Override
     public TgChat add(Long tgChatId) {
-        Optional<TgChat> dbTgChat = findById(tgChatId);
-
-        if (dbTgChat.isPresent()) {
-            throw new ChatAlreadyExistsException(tgChatId);
-        }
-
         return jdbcTemplate.queryForObject("insert into tg_chat(chat_id) values(:chatId) returning *",
                 Map.of("chatId", tgChatId),
                 rowMapper);

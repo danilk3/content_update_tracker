@@ -6,18 +6,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.TgChat;
-import ru.tinkoff.edu.java.scrapper.exceptions.ChatAlreadyExistsException;
+import ru.tinkoff.edu.java.scrapper.domain.repository.jdbc.TgChatRepositoryImpl;
 import ru.tinkoff.edu.java.scrapper.utils.IntegrationEnvironment;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-public class TgChatRepositoryTest extends IntegrationEnvironment {
+public class TgChatRepositoryImplTest extends IntegrationEnvironment {
 
     @Autowired
     private TgChatRepositoryImpl tgChatRepository;
@@ -35,17 +33,6 @@ public class TgChatRepositoryTest extends IntegrationEnvironment {
 
         assertThat(allChats.get(0).getChatId()).isEqualTo(id);
         assertThat(allChats.get(0).getCreatedAt()).isNotNull();
-    }
-
-    @Transactional
-    @Rollback
-    @Test
-    void addWithChatAlreadyExistsTest() {
-        Long id1 = new Random().nextLong();
-        tgChatRepository.add(id1);
-        assertThatThrownBy(() -> tgChatRepository.add(id1))
-                .isInstanceOf(UndeclaredThrowableException.class)
-                .hasCauseInstanceOf(ChatAlreadyExistsException.class);
     }
 
     @Transactional

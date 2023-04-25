@@ -6,21 +6,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
-import ru.tinkoff.edu.java.scrapper.exceptions.ChatNotExistsException;
+import ru.tinkoff.edu.java.scrapper.domain.repository.jdbc.LinkRepositoryImpl;
 import ru.tinkoff.edu.java.scrapper.utils.IntegrationEnvironment;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 @SpringBootTest
-public class LinkRepositoryTest extends IntegrationEnvironment {
+public class LinkRepositoryImplTest extends IntegrationEnvironment {
     @Autowired
-    private LinkRepository linkRepository;
+    private LinkRepositoryImpl linkRepository;
 
     @Autowired
     private TgChatRepository tgChatRepository;
@@ -43,18 +41,6 @@ public class LinkRepositoryTest extends IntegrationEnvironment {
         assertThat(allChats.get(0).getTgChatId()).isEqualTo(tgChatId);
         assertThat(allChats.get(0).getUrl()).isEqualTo(url);
         assertThat(allChats.get(0).getCreatedAt()).isNotNull();
-    }
-
-    @Transactional
-    @Rollback
-    @Test
-    void addWhenChatDoesNotExistsTest() {
-        Long tgChatId = new Random().nextLong();
-        String url = "google.com";
-
-        assertThatThrownBy(() -> linkRepository.add(tgChatId, url))
-                .isInstanceOf(UndeclaredThrowableException.class)
-                .hasCauseInstanceOf(ChatNotExistsException.class);
     }
 
     @Transactional
@@ -125,14 +111,5 @@ public class LinkRepositoryTest extends IntegrationEnvironment {
         assertThat(allChats.get(0).getTgChatId()).isEqualTo(tgChatId);
         assertThat(allChats.get(0).getUrl()).isEqualTo(url);
         assertThat(allChats.get(0).getCreatedAt()).isNotNull();
-    }
-
-    @Transactional
-    @Rollback
-    @Test
-    void findAllByIdWhenChatNotExistsTest() {
-        assertThatThrownBy(() -> linkRepository.findAllByTgChatId(new Random().nextLong()))
-                .isInstanceOf(UndeclaredThrowableException.class)
-                .hasCauseInstanceOf(ChatNotExistsException.class);
     }
 }

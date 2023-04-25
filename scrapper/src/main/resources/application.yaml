@@ -1,6 +1,7 @@
 app:
   test: helloFromScrapper
   gitHubToken: ${TOKEN}
+  databaseAccessType: jdbc
   scheduler:
     interval: 5000
 
