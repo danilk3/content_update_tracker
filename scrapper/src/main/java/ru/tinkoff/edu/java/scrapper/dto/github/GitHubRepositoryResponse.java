@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-public record GitHubRepositoryResponse(Long id,
-                                       String name,
-                                       @JsonProperty("full_name") String fullName,
+public record GitHubRepositoryResponse(String name,
                                        GitHubRepositoryOwnerResponse owner,
-                                       @JsonProperty("html_url") String htmlUrl,
                                        Boolean fork,
                                        @JsonProperty("forks_count") Long forksCount,
                                        @JsonProperty("watchers_count") Long watchersCount,
+                                       @JsonProperty("open_issues_count") Long openIssuesCount,
                                        @JsonProperty("pushed_at") OffsetDateTime pushedAt,
-                                       @JsonProperty("created_at") OffsetDateTime createdAt,
-                                       @JsonProperty("updated_at") OffsetDateTime updatedAt) {
+                                       @JsonProperty("created_at") OffsetDateTime createdAt) {
 }

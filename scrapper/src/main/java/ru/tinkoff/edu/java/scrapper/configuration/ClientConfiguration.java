@@ -35,4 +35,11 @@ public class ClientConfiguration {
                 .baseUrl(baseUrl == null ? STACKOVERFLOW_BASE_URL : baseUrl)
                 .build();
     }
+
+    @Bean
+    public WebClient botWebClient(@Value("{bot.base-url}") String baseUrl) {
+        return WebClient.builder()
+                .baseUrl(baseUrl)
+                .build();
+    }
 }

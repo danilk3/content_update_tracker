@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.tinkoff.edu.java.scrapper.dto.api.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.exceptions.ChatAlreadyExistsException;
 import ru.tinkoff.edu.java.scrapper.exceptions.ChatNotExistsException;
 import ru.tinkoff.edu.java.scrapper.exceptions.LinkNotExistsException;
 
@@ -49,5 +50,12 @@ public class ScrapperExceptionHandler {
     @ExceptionHandler(ChatNotExistsException.class)
     public ApiErrorResponse handleChatNotExistsException(ChatNotExistsException exception) {
         return new ApiErrorResponse("Chat does not exists", "404", "ChatNotExistsException", exception.getMessage(), exception.getStackTrace());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ChatAlreadyExistsException.class)
+    public ApiErrorResponse handleChatAlreadyExistsException(ChatAlreadyExistsException exception) {
+        return new ApiErrorResponse("Chat already exists", "409", "ChatAlreadyExistsException", exception.getMessage(), exception.getStackTrace());
+
     }
 }

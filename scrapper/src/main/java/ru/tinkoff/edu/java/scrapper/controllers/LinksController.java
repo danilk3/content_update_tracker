@@ -7,28 +7,33 @@ import ru.tinkoff.edu.java.scrapper.dto.api.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.api.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.api.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.dto.api.RemoveLinkRequest;
-
-import java.util.List;
+import ru.tinkoff.edu.java.scrapper.services.LinkService;
 
 @RestController
 @RequestMapping("links")
 public class LinksController {
 
+    private final LinkService linkService;
+
+    public LinksController(LinkService linkService) {
+        this.linkService = linkService;
+    }
+
     @GetMapping
     public ResponseEntity<ListLinksResponse> getAllWatchingLinks(@RequestHeader(name = "Tg-Chat-Id") Long tgChatId) {
-        ListLinksResponse stub = new ListLinksResponse(List.of(new LinkResponse(tgChatId, "https://www.google.com/")), 1);
-        return ResponseEntity.ok(stub);
+        ListLinksResponse listLinksResponse = linkService.getAllWatchingLinks(tgChatId);
+        return ResponseEntity.ok(listLinksResponse);
     }
 
     @PostMapping
     public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") Long tgChatId, @RequestBody @Valid AddLinkRequest request) {
-        LinkResponse stub = new LinkResponse(tgChatId, request.link());
-        return ResponseEntity.ok(stub);
+        LinkResponse linkResponse = linkService.addLink(tgChatId, request.link());
+        return ResponseEntity.ok(linkResponse);
     }
 
     @DeleteMapping
     public ResponseEntity<LinkResponse> removeLink(@RequestHeader("Tg-Chat-Id") Long tgChatId, @RequestBody @Valid RemoveLinkRequest request) {
-        LinkResponse stub = new LinkResponse(tgChatId, request.link());
-        return ResponseEntity.ok(stub);
+        LinkResponse linkResponse = linkService.removeLink(tgChatId, request.link());
+        return ResponseEntity.ok(linkResponse);
     }
 }
