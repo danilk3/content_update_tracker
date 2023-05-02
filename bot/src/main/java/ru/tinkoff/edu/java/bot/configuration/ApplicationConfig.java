@@ -6,5 +6,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, String apiKey) {
+public record ApplicationConfig(@NotNull String test,
+                                @NotNull String apiKey,
+                                @NotNull RabbitMqConfig rabbitMq) {
 }

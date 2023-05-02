@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.scrapper.services.web_service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.clients.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.domain.entity.StackoverflowLink;
 import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
@@ -10,6 +9,7 @@ import ru.tinkoff.edu.java.scrapper.domain.updater.UpdatableRepository;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdate;
 import ru.tinkoff.edu.java.scrapper.dto.stackoverflow.StackoverflowItems;
 import ru.tinkoff.edu.java.scrapper.models.MessageSaver;
+import ru.tinkoff.edu.java.scrapper.services.BotUpdater;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +26,14 @@ public class StackoverflowService implements UpdatableService {
 
     private final StackoverflowClient stackoverflowClient;
 
-    private final BotClient botClient;
+    private final BotUpdater botUpdater;
 
     private final LinkRepository linkRepository;
 
-    public StackoverflowService(UpdatableRepository<StackoverflowLink, StackoverflowItems> stackoverflowRepository, StackoverflowClient stackoverflowClient, BotClient botClient, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
+    public StackoverflowService(UpdatableRepository<StackoverflowLink, StackoverflowItems> stackoverflowRepository, StackoverflowClient stackoverflowClient, BotUpdater botUpdater, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
         this.stackoverflowRepository = stackoverflowRepository;
         this.stackoverflowClient = stackoverflowClient;
-        this.botClient = botClient;
+        this.botUpdater = botUpdater;
         this.linkRepository = linkRepository;
     }
 
@@ -66,7 +66,7 @@ public class StackoverflowService implements UpdatableService {
             StackoverflowLink updatableLink = saver.getValue().get(0).getValue();
             String message = saver.getValue().get(0).getMessage();
 
-            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
+            botUpdater.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
         }
     }
 }
