@@ -7,5 +7,8 @@ import ru.tinkoff.edu.java.scrapper.models.Scheduler;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, @NotNull String gitHubToken, @NotNull Scheduler scheduler) {
+public record ApplicationConfig(@NotNull String test,
+                                @NotNull String gitHubToken,
+                                @NotNull Scheduler scheduler,
+                                @NotNull AccessType databaseAccessType) {
 }

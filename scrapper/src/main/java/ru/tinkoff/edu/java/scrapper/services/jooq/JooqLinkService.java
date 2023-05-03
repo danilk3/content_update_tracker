@@ -1,7 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.services.jooq;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
 import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.dto.api.LinkResponse;
@@ -11,14 +9,13 @@ import ru.tinkoff.edu.java.scrapper.services.LinkService;
 
 import java.util.List;
 
-@Service
 public class JooqLinkService implements LinkService {
 
     private final LinkRepository linkRepository;
 
     private final LinkMapper linkMapper;
 
-    public JooqLinkService(@Qualifier("linkRepositoryJooqImpl") LinkRepository linkRepository, LinkMapper linkMapper) {
+    public JooqLinkService(LinkRepository linkRepository, LinkMapper linkMapper) {
         this.linkRepository = linkRepository;
         this.linkMapper = linkMapper;
     }

@@ -1,11 +1,11 @@
-package ru.tinkoff.edu.java.scrapper.services.jdbc;
+package ru.tinkoff.edu.java.scrapper.services.jpa;
 
 import lombok.SneakyThrows;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
 import ru.tinkoff.edu.java.scrapper.domain.entity.TgChat;
-import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
-import ru.tinkoff.edu.java.scrapper.domain.repository.TgChatRepository;
+import ru.tinkoff.edu.java.scrapper.domain.repository.jpa.LinkRepositoryJpa;
+import ru.tinkoff.edu.java.scrapper.domain.repository.jpa.TgChatRepositoryJpa;
 import ru.tinkoff.edu.java.scrapper.dto.api.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.api.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.exceptions.ChatNotExistsException;
@@ -15,15 +15,15 @@ import ru.tinkoff.edu.java.scrapper.services.LinkService;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcLinkService implements LinkService {
+public class JpaLinkService implements LinkService {
 
-    private final LinkRepository linkRepository;
+    private final LinkRepositoryJpa linkRepository;
 
-    private final TgChatRepository tgChatRepository;
+    private final TgChatRepositoryJpa tgChatRepository;
 
     private final LinkMapper linkMapper;
 
-    public JdbcLinkService(LinkRepository linkRepository, TgChatRepository tgChatRepository, LinkMapper linkMapper) {
+    public JpaLinkService(LinkRepositoryJpa linkRepository, TgChatRepositoryJpa tgChatRepository, LinkMapper linkMapper) {
         this.linkRepository = linkRepository;
         this.tgChatRepository = tgChatRepository;
         this.linkMapper = linkMapper;
@@ -39,20 +39,20 @@ public class JdbcLinkService implements LinkService {
             throw new ChatNotExistsException(tgChatId);
         }
 
-        Link dbLink = linkRepository.add(tgChatId, link);
+        Link dbLink = linkRepository.save(new Link(null, tgChatId, link, null, null));
         LinkResponse linkResponse = linkMapper.toLinkResponse(dbLink);
         return linkResponse;
     }
 
     @Override
     public LinkResponse removeLink(Long tgChatId, String link) {
-        Link dbLink = linkRepository.remove(tgChatId, link);
+        Link dbLink = linkRepository.deleteByTgChatIdAndUrl(tgChatId, link);
         LinkResponse linkResponse = linkMapper.toLinkResponse(dbLink);
         return linkResponse;
     }
 
-    @SneakyThrows
     @Transactional
+    @SneakyThrows
     @Override
     public ListLinksResponse getAllWatchingLinks(Long tgChatId) {
         Optional<TgChat> tgChatFromDb = tgChatRepository.findById(tgChatId);
