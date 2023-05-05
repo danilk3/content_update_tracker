@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface LinkRepositoryJpa extends JpaRepository<Link, Long> {
 
-    Link deleteByTgChatIdAndUrl(Long tgChatId, String url);
+    Integer deleteByTgChatIdAndUrl(Long tgChatId, String url);
 
     List<Link> findAll();
 

@@ -14,7 +14,9 @@ public class JpaTgChatService implements TgChatService {
 
     @Override
     public void register(Long tgChatId) {
-        tgChatRepository.save(new TgChat(tgChatId, null));
+        TgChat chat = new TgChat();
+        chat.setChatId(tgChatId);
+        tgChatRepository.save(chat);
     }
 
     @Override

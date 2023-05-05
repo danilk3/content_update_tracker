@@ -21,7 +21,7 @@ public class JpaAccessConfiguration {
     }
 
     @Bean
-    public LinkService tgChatService(LinkRepositoryJpa linkRepository, TgChatRepositoryJpa tgChatRepository, LinkMapper linkMapper) {
+    public LinkService linkService(LinkRepositoryJpa linkRepository, TgChatRepositoryJpa tgChatRepository, LinkMapper linkMapper) {
         return new JpaLinkService(linkRepository, tgChatRepository, linkMapper);
     }
 }
