@@ -1,10 +1,9 @@
 package ru.tinkoff.edu.java.link_parser.chain;
 
-import ru.tinkoff.edu.java.link_parser.chain.result.ResultGetter;
-import ru.tinkoff.edu.java.link_parser.model.ParseResult;
-
 import java.net.URL;
 import java.util.List;
+import ru.tinkoff.edu.java.link_parser.chain.result.ResultGetter;
+import ru.tinkoff.edu.java.link_parser.model.ParseResult;
 
 public abstract class BaseMiddleware {
 

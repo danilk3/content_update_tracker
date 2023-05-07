@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.services.jpa;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {JpaAccessConfiguration.class})
 @EnableAutoConfiguration
-class JpaLinkServiceTest extends IntegrationEnvironment {
+public class JpaLinkServiceTest extends IntegrationEnvironment {
 
     @Autowired
     private LinkService linkService;
@@ -41,7 +41,7 @@ class JpaLinkServiceTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     @Test
-    void addLinkTest() {
+    public void addLinkTest() {
         Long tgChatId = new Random().nextLong();
         String url = "google.com";
 
@@ -61,7 +61,7 @@ class JpaLinkServiceTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     @Test
-    void removeLinkTest() {
+    public void removeLinkTest() {
         Long tgChatId = new Random().nextLong();
         String url = "google.com";
 
@@ -87,7 +87,7 @@ class JpaLinkServiceTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     @Test
-    void getAllWatchingLinksTest() {
+    public void getAllWatchingLinksTest() {
         Long tgChatId = new Random().nextLong();
         String url = "google.com";
 

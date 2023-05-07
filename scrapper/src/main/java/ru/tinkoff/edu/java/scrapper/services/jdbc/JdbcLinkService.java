@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.services.jdbc;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
@@ -11,9 +13,6 @@ import ru.tinkoff.edu.java.scrapper.dto.api.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.exceptions.ChatNotExistsException;
 import ru.tinkoff.edu.java.scrapper.mapper.LinkMapper;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
-
-import java.util.List;
-import java.util.Optional;
 
 public class JdbcLinkService implements LinkService {
 
@@ -29,10 +28,7 @@ public class JdbcLinkService implements LinkService {
         this.linkMapper = linkMapper;
     }
 
-    @SneakyThrows
-    @Transactional
-    @Override
-    public LinkResponse addLink(Long tgChatId, String link) {
+    @SneakyThrows @Transactional @Override public LinkResponse addLink(Long tgChatId, String link) {
         Optional<TgChat> tgChatFromDb = tgChatRepository.findById(tgChatId);
 
         if (tgChatFromDb.isEmpty()) {
@@ -44,17 +40,13 @@ public class JdbcLinkService implements LinkService {
         return linkResponse;
     }
 
-    @Override
-    public LinkResponse removeLink(Long tgChatId, String link) {
+    @Override public LinkResponse removeLink(Long tgChatId, String link) {
         Link dbLink = linkRepository.remove(tgChatId, link);
         LinkResponse linkResponse = linkMapper.toLinkResponse(dbLink);
         return linkResponse;
     }
 
-    @SneakyThrows
-    @Transactional
-    @Override
-    public ListLinksResponse getAllWatchingLinks(Long tgChatId) {
+    @SneakyThrows @Transactional @Override public ListLinksResponse getAllWatchingLinks(Long tgChatId) {
         Optional<TgChat> tgChatFromDb = tgChatRepository.findById(tgChatId);
 
         if (tgChatFromDb.isEmpty()) {

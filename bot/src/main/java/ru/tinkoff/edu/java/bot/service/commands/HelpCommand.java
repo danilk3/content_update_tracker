@@ -28,7 +28,12 @@ public non-sealed class HelpCommand extends Command {
         CommandDescriptionEnum[] descriptions = CommandDescriptionEnum.class.getEnumConstants();
 
         for (int i = 0; i < names.length; i++) {
-            res.append(String.format("%d) <b>%s</b> - %s\n\n", counter++, names[i].getValue(), descriptions[i].getValue()));
+            res.append(String.format(
+                "%d) <b>%s</b> - %s\n\n",
+                counter++,
+                names[i].getValue(),
+                descriptions[i].getValue()
+            ));
         }
 
         return res.toString();

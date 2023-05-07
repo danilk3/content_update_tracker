@@ -1,8 +1,7 @@
 package ru.tinkoff.edu.java.link_parser.chain.result;
 
-import ru.tinkoff.edu.java.link_parser.model.GithubParseResult;
-
 import java.net.URL;
+import ru.tinkoff.edu.java.link_parser.model.GithubParseResult;
 
 public class GithubResultGetter implements ResultGetter {
 

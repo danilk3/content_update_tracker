@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.services.jpa;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
@@ -12,9 +14,6 @@ import ru.tinkoff.edu.java.scrapper.exceptions.ChatNotExistsException;
 import ru.tinkoff.edu.java.scrapper.mapper.LinkMapper;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
 
-import java.util.List;
-import java.util.Optional;
-
 public class JpaLinkService implements LinkService {
 
     private final LinkRepositoryJpa linkRepository;
@@ -23,7 +22,11 @@ public class JpaLinkService implements LinkService {
 
     private final LinkMapper linkMapper;
 
-    public JpaLinkService(LinkRepositoryJpa linkRepository, TgChatRepositoryJpa tgChatRepository, LinkMapper linkMapper) {
+    public JpaLinkService(
+        LinkRepositoryJpa linkRepository,
+        TgChatRepositoryJpa tgChatRepository,
+        LinkMapper linkMapper
+    ) {
         this.linkRepository = linkRepository;
         this.tgChatRepository = tgChatRepository;
         this.linkMapper = linkMapper;

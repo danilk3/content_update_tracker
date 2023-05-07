@@ -3,13 +3,11 @@ package ru.tinkoff.edu.java.bot.service;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.bot.service.commands.Command;
 import ru.tinkoff.edu.java.link_parser.Parser;
-
-import java.util.Map;
-
 import static java.util.Objects.isNull;
 
 @Service
@@ -48,8 +46,9 @@ public class UserMessageProcessor {
 
         if (isNull(command)) {
             return new SendMessage(
-                    update.message().chat().id(),
-                    "Unknown command :(");
+                update.message().chat().id(),
+                "Unknown command :("
+            );
         }
 
         return command.handle(update);

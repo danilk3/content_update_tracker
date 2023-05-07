@@ -18,7 +18,11 @@ public class BotService {
     }
 
     private String createMessage(LinkUpdate update) {
-        return String.format("Hello! There are a few changes related to the link %s \n%s", update.url(), update.description());
+        return String.format(
+            "Hello! There are a few changes related to the link %s \n%s",
+            update.url(),
+            update.description()
+        );
     }
 
 }

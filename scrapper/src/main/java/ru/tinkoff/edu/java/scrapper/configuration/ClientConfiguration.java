@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,24 +22,24 @@ public class ClientConfiguration {
     @Bean
     public WebClient gitHubWebClient(@Value("${app.github.baseUrl:#{null}}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl(baseUrl == null ? GITHUB_BASE_URL : baseUrl)
-                .defaultHeader("Accept", "application/vnd.github+json")
-                .defaultHeader("X-GitHub-Api-Version", "2022-11-28")
-                .defaultHeader("Authorization", String.format("Bearer %s", applicationConfig.gitHubToken()))
-                .build();
+            .baseUrl(baseUrl == null ? GITHUB_BASE_URL : baseUrl)
+            .defaultHeader("Accept", "application/vnd.github+json")
+            .defaultHeader("X-GitHub-Api-Version", "2022-11-28")
+            .defaultHeader("Authorization", String.format("Bearer %s", applicationConfig.gitHubToken()))
+            .build();
     }
 
     @Bean
     public WebClient stackoverflowWebClient(@Value("${app.stackoverflow.baseUrl:#{null}}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl(baseUrl == null ? STACKOVERFLOW_BASE_URL : baseUrl)
-                .build();
+            .baseUrl(baseUrl == null ? STACKOVERFLOW_BASE_URL : baseUrl)
+            .build();
     }
 
     @Bean
     public WebClient botWebClient(@Value("{bot.base-url}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+            .baseUrl(baseUrl)
+            .build();
     }
 }

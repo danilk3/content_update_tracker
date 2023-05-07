@@ -1,12 +1,11 @@
 package ru.tinkoff.edu.java.scrapper.mapper;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
 import ru.tinkoff.edu.java.scrapper.dto.api.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.api.ListLinksResponse;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LinkMapper {

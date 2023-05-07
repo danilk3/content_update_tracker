@@ -6,4 +6,3 @@ public record RabbitMqConfig(String queueName,
                              String deadLetterRoutingKey,
                              String dql) {
 }
-
