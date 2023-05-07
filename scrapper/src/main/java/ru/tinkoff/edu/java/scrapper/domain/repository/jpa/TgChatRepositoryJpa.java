@@ -11,6 +11,6 @@ public interface TgChatRepositoryJpa extends JpaRepository<TgChat, Long> {
 
     List<TgChat> findAll();
 
-    TgChat deleteByChatId(Long chatId);
+    Integer deleteByChatId(Long chatId);
 
 }

@@ -39,16 +39,19 @@ public class JpaLinkService implements LinkService {
             throw new ChatNotExistsException(tgChatId);
         }
 
-        Link dbLink = linkRepository.save(new Link(null, tgChatId, link, null, null));
+        Link linkToSave = new Link();
+        linkToSave.setTgChatId(tgChatId);
+        linkToSave.setUrl(link);
+
+        Link dbLink = linkRepository.save(linkToSave);
         LinkResponse linkResponse = linkMapper.toLinkResponse(dbLink);
         return linkResponse;
     }
 
     @Override
     public LinkResponse removeLink(Long tgChatId, String link) {
-        Link dbLink = linkRepository.deleteByTgChatIdAndUrl(tgChatId, link);
-        LinkResponse linkResponse = linkMapper.toLinkResponse(dbLink);
-        return linkResponse;
+        linkRepository.deleteByTgChatIdAndUrl(tgChatId, link);
+        return linkMapper.toLinkResponse(null);
     }
 
     @Transactional

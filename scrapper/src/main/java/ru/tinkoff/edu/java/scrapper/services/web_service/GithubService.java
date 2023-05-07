@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.scrapper.services.web_service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.clients.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.domain.entity.GitHubRepositoryLink;
 import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
@@ -11,8 +10,12 @@ import ru.tinkoff.edu.java.scrapper.domain.updater.UpdatableRepository;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdate;
 import ru.tinkoff.edu.java.scrapper.dto.github.GitHubRepositoryResponse;
 import ru.tinkoff.edu.java.scrapper.models.MessageSaver;
+import ru.tinkoff.edu.java.scrapper.services.BotUpdater;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
@@ -24,14 +27,14 @@ public class GithubService implements UpdatableService {
 
     private final GitHubClient gitHubClient;
 
-    private final BotClient botClient;
+    private final BotUpdater botUpdater;
 
     private final LinkRepository linkRepository;
 
-    public GithubService(UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository, GitHubClient gitHubClient, BotClient botClient, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
+    public GithubService(UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository, GitHubClient gitHubClient, BotUpdater botUpdater, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
         this.gitHubRepository = gitHubRepository;
         this.gitHubClient = gitHubClient;
-        this.botClient = botClient;
+        this.botUpdater = botUpdater;
         this.linkRepository = linkRepository;
     }
 
@@ -63,7 +66,7 @@ public class GithubService implements UpdatableService {
             GitHubRepositoryLink updatableLink = saver.getValue().get(0).getValue();
             String message = saver.getValue().get(0).getMessage();
 
-            botClient.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
+            botUpdater.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
         }
     }
 }

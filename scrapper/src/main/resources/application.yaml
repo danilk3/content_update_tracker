@@ -4,6 +4,12 @@ app:
   databaseAccessType: jdbc
   scheduler:
     interval: 5000
+  useQueue: true
+  rabbitmq:
+    queueName: scrapper_queue
+    topicExchangeName: scrapper_exchange
+    deadLetterTopicExchangeName: scrapper_exchange_dead
+    deadLetterRoutingKey: scrapper_exchange_rk
 
 springdoc:
   swagger-ui:

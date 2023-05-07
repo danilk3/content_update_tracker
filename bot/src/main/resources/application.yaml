@@ -1,6 +1,12 @@
 app:
   test: helloFromBot
   api-key: ${TG_TOKEN}
+  rabbitmq:
+    queueName: scrapper_queue
+    topicExchangeName: scrapper_exchange
+    deadLetterTopicExchangeName: scrapper_exchange_dead
+    deadLetterRoutingKey: scrapper_exchange_rk
+    dql: scrapper_queue.dlq
 
 springdoc:
   swagger-ui:

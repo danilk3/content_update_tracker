@@ -17,5 +17,5 @@ public class TgChat {
     @Id
     private Long chatId;
 
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 }

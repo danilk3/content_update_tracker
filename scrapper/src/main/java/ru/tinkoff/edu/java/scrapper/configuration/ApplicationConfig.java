@@ -10,5 +10,7 @@ import ru.tinkoff.edu.java.scrapper.models.Scheduler;
 public record ApplicationConfig(@NotNull String test,
                                 @NotNull String gitHubToken,
                                 @NotNull Scheduler scheduler,
-                                @NotNull AccessType databaseAccessType) {
+                                @NotNull AccessType databaseAccessType,
+                                @NotNull RabbitMqConfig rabbitMq,
+                                @NotNull Boolean useQueue) {
 }
