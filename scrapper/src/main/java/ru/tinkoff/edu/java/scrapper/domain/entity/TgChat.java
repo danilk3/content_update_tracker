@@ -2,11 +2,10 @@ package ru.tinkoff.edu.java.scrapper.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.OffsetDateTime;
 
 @Data
 @Entity

@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.bot.service.models.CommandDescriptionEnum;
 import ru.tinkoff.edu.java.bot.service.models.CommandNameEnum;
 
 @Component
-public non-sealed class UntrackCommand extends Command{
+public non-sealed class UntrackCommand extends Command {
     @Override
     public String command() {
         return CommandNameEnum.UNTRACK.toString();
@@ -22,7 +22,7 @@ public non-sealed class UntrackCommand extends Command{
     @Override
     public SendMessage handle(Update update) {
         return new SendMessage(update.message().chat().id(), "Enter url to untrack")
-                .replyToMessageId(update.message().messageId())
-                .replyMarkup(new ForceReply());
+            .replyToMessageId(update.message().messageId())
+            .replyMarkup(new ForceReply());
     }
 }

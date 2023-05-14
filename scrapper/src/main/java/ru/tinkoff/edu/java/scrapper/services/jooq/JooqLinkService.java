@@ -1,13 +1,12 @@
 package ru.tinkoff.edu.java.scrapper.services.jooq;
 
+import java.util.List;
 import ru.tinkoff.edu.java.scrapper.domain.entity.Link;
 import ru.tinkoff.edu.java.scrapper.domain.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.dto.api.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.api.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.mapper.LinkMapper;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
-
-import java.util.List;
 
 public class JooqLinkService implements LinkService {
 

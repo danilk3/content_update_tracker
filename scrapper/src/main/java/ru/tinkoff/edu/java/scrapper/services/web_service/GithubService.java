@@ -1,5 +1,10 @@
 package ru.tinkoff.edu.java.scrapper.services.web_service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +16,6 @@ import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdate;
 import ru.tinkoff.edu.java.scrapper.dto.github.GitHubRepositoryResponse;
 import ru.tinkoff.edu.java.scrapper.models.MessageSaver;
 import ru.tinkoff.edu.java.scrapper.services.BotUpdater;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
 
 @Service
@@ -31,7 +29,12 @@ public class GithubService implements UpdatableService {
 
     private final LinkRepository linkRepository;
 
-    public GithubService(UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository, GitHubClient gitHubClient, BotUpdater botUpdater, @Qualifier("linkRepositoryImpl") LinkRepository linkRepository) {
+    public GithubService(
+        UpdatableRepository<GitHubRepositoryLink, GitHubRepositoryResponse> gitHubRepository,
+        GitHubClient gitHubClient,
+        BotUpdater botUpdater,
+        @Qualifier("linkRepositoryImpl") LinkRepository linkRepository
+    ) {
         this.gitHubRepository = gitHubRepository;
         this.gitHubClient = gitHubClient;
         this.botUpdater = botUpdater;
@@ -45,7 +48,8 @@ public class GithubService implements UpdatableService {
         Map<String, List<MessageSaver<GitHubRepositoryLink>>> needToSendToBot = new HashMap<>();
 
         for (GitHubRepositoryLink githubLink : oldLinks) {
-            GitHubRepositoryResponse response = gitHubClient.getGithubRepository(githubLink.getOwnerName(), githubLink.getName());
+            GitHubRepositoryResponse response =
+                gitHubClient.getGithubRepository(githubLink.getOwnerName(), githubLink.getName());
 
             String message = githubLink.getMessage(response);
 
@@ -61,12 +65,18 @@ public class GithubService implements UpdatableService {
         }
 
         for (Map.Entry<String, List<MessageSaver<GitHubRepositoryLink>>> saver : needToSendToBot.entrySet()) {
-            Set<Long> tgChatIds = saver.getValue().stream().map(el -> el.getValue().getTgChatId()).collect(Collectors.toSet());
+            Set<Long> tgChatIds =
+                saver.getValue().stream().map(el -> el.getValue().getTgChatId()).collect(Collectors.toSet());
 
             GitHubRepositoryLink updatableLink = saver.getValue().get(0).getValue();
             String message = saver.getValue().get(0).getMessage();
 
-            botUpdater.sendUpdate(new LinkUpdate(updatableLink.getId(), updatableLink.getUrl(), message, tgChatIds.stream().toList()));
+            botUpdater.sendUpdate(new LinkUpdate(
+                updatableLink.getId(),
+                updatableLink.getUrl(),
+                message,
+                tgChatIds.stream().toList()
+            ));
         }
     }
 }

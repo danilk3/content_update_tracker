@@ -14,13 +14,25 @@ public class BotExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ApiErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return new ApiErrorResponse("Missed request body", "400", "HttpMessageNotReadableException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Missed request body",
+            HttpStatus.BAD_REQUEST.toString(),
+            "HttpMessageNotReadableException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        return new ApiErrorResponse("Not valid request body", "400", "MethodArgumentNotValidException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Not valid request body",
+            HttpStatus.BAD_REQUEST.toString(),
+            "MethodArgumentNotValidException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
 }

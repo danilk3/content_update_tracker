@@ -1,6 +1,10 @@
 package ru.tinkoff.edu.java.bot.configuration;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +27,8 @@ public class RabbitMQConfiguration {
     @Bean
     public Queue queue(ApplicationConfig applicationConfig) {
         return QueueBuilder.durable(applicationConfig.rabbitMq().queueName())
-                .withArgument("x-dead-letter-exchange", applicationConfig.rabbitMq().deadLetterTopicExchangeName())
-                .withArgument("x-dead-letter-routing-key", applicationConfig.rabbitMq().deadLetterRoutingKey()).build();
+            .withArgument("x-dead-letter-exchange", applicationConfig.rabbitMq().deadLetterTopicExchangeName())
+            .withArgument("x-dead-letter-routing-key", applicationConfig.rabbitMq().deadLetterRoutingKey()).build();
     }
 
     @Bean
@@ -33,12 +37,18 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Binding binding(@Qualifier("queue") Queue queue, @Qualifier("directExchange") DirectExchange directExchange) {
+    public Binding binding(
+        @Qualifier("queue") Queue queue,
+        @Qualifier("directExchange") DirectExchange directExchange
+    ) {
         return BindingBuilder.bind(queue).to(directExchange).withQueueName();
     }
 
     @Bean
-    public Binding dqlBinding(@Qualifier("dql") Queue queue, @Qualifier("deadLetterDirectExchange") DirectExchange directExchange) {
+    public Binding dqlBinding(
+        @Qualifier("dql") Queue queue,
+        @Qualifier("deadLetterDirectExchange") DirectExchange directExchange
+    ) {
         return BindingBuilder.bind(queue).to(directExchange).withQueueName();
     }
 

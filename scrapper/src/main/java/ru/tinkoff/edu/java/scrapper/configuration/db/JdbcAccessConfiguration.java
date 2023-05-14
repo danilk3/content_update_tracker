@@ -16,7 +16,11 @@ import ru.tinkoff.edu.java.scrapper.services.jdbc.JdbcTgChatService;
 public class JdbcAccessConfiguration {
 
     @Bean
-    public LinkService linkService(LinkRepositoryImpl linkRepositoryImpl, TgChatRepositoryImpl tgChatRepositoryImpl, LinkMapper linkMapper) {
+    public LinkService linkService(
+        LinkRepositoryImpl linkRepositoryImpl,
+        TgChatRepositoryImpl tgChatRepositoryImpl,
+        LinkMapper linkMapper
+    ) {
         return new JdbcLinkService(linkRepositoryImpl, tgChatRepositoryImpl, linkMapper);
     }
 

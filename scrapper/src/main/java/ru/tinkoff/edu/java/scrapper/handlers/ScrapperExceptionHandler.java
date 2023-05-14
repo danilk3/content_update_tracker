@@ -19,43 +19,85 @@ public class ScrapperExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MissingRequestHeaderException.class})
     public ApiErrorResponse handleMissingRequestHeaderException(MissingRequestHeaderException exception) {
-        return new ApiErrorResponse("Missed request header", "400", "MissingRequestHeaderException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Missed request header",
+            HttpStatus.BAD_REQUEST.toString(),
+            "MissingRequestHeaderException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ApiErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return new ApiErrorResponse("Missed request body", "400", "HttpMessageNotReadableException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Missed request body",
+            HttpStatus.BAD_REQUEST.toString(),
+            "HttpMessageNotReadableException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        return new ApiErrorResponse("Not valid request body", "400", "MethodArgumentNotValidException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Not valid request body",
+            HttpStatus.BAD_REQUEST.toString(),
+            "MethodArgumentNotValidException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ApiErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
-        return new ApiErrorResponse("Argument mismatch", "400", "MethodArgumentTypeMismatchException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Argument mismatch",
+            HttpStatus.BAD_REQUEST.toString(),
+            "MethodArgumentTypeMismatchException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(LinkNotExistsException.class)
     public ApiErrorResponse handleLinkNotExistsException(LinkNotExistsException exception) {
-        return new ApiErrorResponse("Link does not exists", "404", "LinkNotExistsException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Link does not exists",
+            HttpStatus.NOT_FOUND.toString(),
+            "LinkNotExistsException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ChatNotExistsException.class)
     public ApiErrorResponse handleChatNotExistsException(ChatNotExistsException exception) {
-        return new ApiErrorResponse("Chat does not exists", "404", "ChatNotExistsException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Chat does not exists",
+            HttpStatus.NOT_FOUND.toString(),
+            "ChatNotExistsException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ChatAlreadyExistsException.class)
     public ApiErrorResponse handleChatAlreadyExistsException(ChatAlreadyExistsException exception) {
-        return new ApiErrorResponse("Chat already exists", "409", "ChatAlreadyExistsException", exception.getMessage(), exception.getStackTrace());
+        return new ApiErrorResponse(
+            "Chat already exists",
+            HttpStatus.CONFLICT.toString(),
+            "ChatAlreadyExistsException",
+            exception.getMessage(),
+            exception.getStackTrace()
+        );
 
     }
 }

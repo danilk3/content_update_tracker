@@ -11,9 +11,7 @@ import ru.tinkoff.edu.java.bot.service.Bot;
 public class BotApplication {
     public static void main(String[] args) {
         var ctx = SpringApplication.run(BotApplication.class, args);
-        ApplicationConfig config = ctx.getBean(ApplicationConfig.class);
         Bot botBean = ctx.getBean(Bot.class);
         botBean.start();
-        System.out.println(config);
     }
 }

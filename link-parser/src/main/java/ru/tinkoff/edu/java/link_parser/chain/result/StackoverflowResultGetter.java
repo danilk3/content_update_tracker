@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.link_parser.chain.result;
 
+import java.net.URL;
 import ru.tinkoff.edu.java.link_parser.model.ParseResult;
 import ru.tinkoff.edu.java.link_parser.model.StackoverflowParseResult;
-
-import java.net.URL;
 
 public class StackoverflowResultGetter implements ResultGetter {
     @Override

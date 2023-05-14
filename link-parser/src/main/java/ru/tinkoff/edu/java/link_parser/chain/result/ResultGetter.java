@@ -1,11 +1,10 @@
 package ru.tinkoff.edu.java.link_parser.chain.result;
 
-import ru.tinkoff.edu.java.link_parser.model.ParseResult;
-
 import java.net.URL;
+import ru.tinkoff.edu.java.link_parser.model.ParseResult;
 
 public interface ResultGetter {
 
-    public ParseResult getParseResult(URL url);
+    ParseResult getParseResult(URL url);
 
 }
