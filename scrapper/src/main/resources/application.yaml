@@ -22,6 +22,8 @@ bot:
   base-url: http://localhost:8080
 
 spring:
+  application:
+    name: scrapper
   liquibase:
     enabled: false
   datasource:
@@ -31,3 +33,25 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
+
+management:
+  server:
+    port: 8083
+  endpoints:
+    web:
+      path-mapping:
+        prometheus: metrics
+      basePath: /
+      exposure:
+        include: info,health,prometheus
+  endpoint:
+    shutdown:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      enabled: true
+      prometheus:
+        enabled: true
+
