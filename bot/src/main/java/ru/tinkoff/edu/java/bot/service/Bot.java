@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.response.BaseResponse;
+import io.micrometer.core.instrument.Counter;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ public class Bot implements AutoCloseable, UpdatesListener {
 
     private final TelegramBot telegramBot;
 
-    public Bot(TelegramBot telegramBot, UserMessageProcessor userMessageProcessor) {
+    private final Counter tgMetricsCounter;
+
+    public Bot(TelegramBot telegramBot, UserMessageProcessor userMessageProcessor, Counter tgMetricsCounter) {
         this.telegramBot = telegramBot;
         this.userMessageProcessor = userMessageProcessor;
+        this.tgMetricsCounter = tgMetricsCounter;
     }
 
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
@@ -35,6 +39,7 @@ public class Bot implements AutoCloseable, UpdatesListener {
     @Override
     public int process(List<Update> updates) {
         for (Update update : updates) {
+            tgMetricsCounter.increment();
             log.info("Got update from chat with id - {}", update.message().chat().id());
             execute(userMessageProcessor.process(update));
         }

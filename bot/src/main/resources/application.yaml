@@ -12,8 +12,33 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
+spring:
+  application:
+    name: bot
+
 server:
   port: 8080
 
 scrapper:
   base-url: http://localhost:8090
+
+management:
+  server:
+    port: 8082
+  endpoints:
+    web:
+      path-mapping:
+        prometheus: metrics
+      basePath: /
+      exposure:
+        include: info,health,prometheus
+  endpoint:
+    shutdown:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      enabled: true
+      prometheus:
+        enabled: true
